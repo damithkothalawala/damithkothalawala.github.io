@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rclone S3 to OCI OSS Sync Command Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    label { display: block; margin-top: 10px; }
+    input, select { padding: 5px; width: 300px; margin-top: 5px; }
+    #output { margin-top: 20px; white-space: pre-wrap; background: #f4f4f4; padding: 15px; border: 1px solid #ccc; }
+    .hint { font-size: 0.9em; color: #666; }
+    .description { margin-bottom: 30px; background: #eef; padding: 15px; border-left: 4px solid #36c; }
+  </style>
+</head>
+<body>
+  <h1>Rclone S3 to OCI OSS Sync Command Generator</h1>
+
+  <div class="description">
+    <h2>🔧 Description</h2>
+    <p>This interactive tool helps you generate a fully optimised <code>rclone sync</code> command tailored for your system and network setup.</p>
+    <ul>
+      <li>🚀 Designed for high-performance transfers from <strong>Amazon S3</strong> to <strong>Oracle Cloud Infrastructure (OCI)</strong>.</li>
+      <li>🧠 Auto-tunes concurrency parameters based on CPU, RAM, file type, and network bandwidth.</li>
+      <li>🛠️ Includes retry logic, performance stats, and a unique timestamped log file per run.</li>
+    </ul>
+  </div>
+
+  <label>CPU Count (Logical cores):</label>
+  <input type="number" id="cpuCount" value="8">
+  <div class="hint">Run <code>nproc</code> or <code>lscpu</code> to find this</div>
+
+  <label>RAM (in GB):</label>
+  <input type="number" id="ramGB" value="32">
+  <div class="hint">Run <code>free -g</code> or <code>lsmem</code> to find this</div>
+
+  <label>File Type:</label>
+  <select id="fileType">
+    <option value="s">Small</option>
+    <option value="l">Large</option>
+  </select>
+
+  <label>Total Data Size (GB):</label>
+  <input type="number" id="dataSize" value="776">
+
+  <label>Bandwidth (Gbps):</label>
+  <input type="number" id="bandwidth" value="20">
+
+  <label>Booster Factor (default 1):</label>
+  <input type="number" id="booster" value="1">
+
+  <label>Source S3 Path:</label>
+  <input type="text" id="srcPath" value="s3:mybucket/myfolder">
+
+  <label>Destination OCI Path:</label>
+  <input type="text" id="dstPath" value="oci:mybucket/myfolder">
+
+  <button onclick="generateCommand()">Generate Command</button>
+
+  <div id="output"></div>
+
+  <script>
+    function generateCommand() {
+      const cpuCount = parseInt(document.getElementById('cpuCount').value);
+      const ramGB = parseInt(document.getElementById('ramGB').value);
+      const fileType = document.getElementById('fileType').value;
+      const dataSize = parseInt(document.getElementById('dataSize').value);
+      const bandwidth = parseInt(document.getElementById('bandwidth').value);
+      const booster = parseInt(document.getElementById('booster').value) || 1;
+      const srcPath = document.getElementById('srcPath').value.trim();
+      const dstPath = document.getElementById('dstPath').value.trim();
+
+      let transfers, checkers, bufferSize, uploadConcurrency;
+      if (fileType === 's') {
+        transfers = 32 * booster;
+        checkers = 16 * booster;
+        bufferSize = '4M';
+        uploadConcurrency = 4 * booster;
+      } else {
+        transfers = cpuCount * 2 * booster;
+        checkers = cpuCount * booster;
+        bufferSize = '16M';
+        uploadConcurrency = 2 * booster;
+      }
+
+      let tpsLimit = (bandwidth >= 10) ? 12 * booster : (bandwidth >= 5 ? 8 * booster : 4 * booster);
+
+      const logFile = `rclone-${dstPath.replace(/\//g, '_')}-${new Date().toISOString().replace(/[:.]/g, '-')}.log`;
+
+      const command = `rclone sync ${srcPath} ${dstPath} \\
+  --transfers ${transfers} \\
+  --checkers ${checkers} \\
+  --buffer-size ${bufferSize} \\
+  --oos-upload-concurrency ${uploadConcurrency} \\
+  --size-only \\
+  --retries 5 \\
+  --low-level-retries 10 \\
+  --retries-sleep 10s \\
+  --timeout 30s \\
+  --contimeout 10s \\
+  --expect-continue-timeout 5s \\
+  --tpslimit ${tpsLimit} \\
+  --tpslimit-burst ${tpsLimit * 2} \\
+  --stats=1m \\
+  --stats-one-line \\
+  --stats-log-level NOTICE \\
+  --progress \\
+  -v \\
+  --log-file=${logFile}`;
+
+      document.getElementById('output').textContent = command;
+    }
+  </script>
+</body>
+</html>
