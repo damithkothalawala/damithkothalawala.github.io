@@ -23,6 +23,15 @@
       <li>🧠 Auto-tunes concurrency parameters based on CPU, RAM, file type, and network bandwidth.</li>
       <li>🛠️ Includes retry logic, performance stats, and a unique timestamped log file per run.</li>
     </ul>
+    <h2>Mandatory Linux Limit Configs</h2>
+    <p>You will must have following limits on /etc/security/limits.conf</p>
+    <pre>
+*  soft    nproc     4096
+root soft    nproc     unlimited
+root soft     nproc          65000    
+root hard     nproc          65000   
+root hard     nofile         65000
+    </pre>
   </div>
 
   <label>CPU Count (Logical cores):</label>
