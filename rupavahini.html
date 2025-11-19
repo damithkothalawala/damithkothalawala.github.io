@@ -55,6 +55,10 @@
       color: var(--text-secondary);
     }
 
+    footer p {
+      margin: 0;
+    }
+
     main {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -210,9 +214,12 @@
     .channel-name {
       font-weight: 500;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       margin-right: 1rem;
+      max-width: 100%;
+      word-wrap: break-word;
     }
 
     .channel-url {
@@ -383,7 +390,7 @@
         <div class="filter-row">
           <div class="search-box">
             <label for="groupSelect">Filter by Group</label>
-            <select id="groupSelect" size="5" aria-label="Select group">
+            <select id="groupSelect" aria-label="Select group">
               <option value="">All Groups</option>
             </select>
           </div>
