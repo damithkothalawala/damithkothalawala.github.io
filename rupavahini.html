@@ -283,6 +283,18 @@
         gap: 1.5rem;
         padding: 1.5rem;
       }
+
+      .panel {
+        min-height: auto;
+      }
+
+      .left-panel {
+        order: 2;
+      }
+
+      .right-panel {
+        order: 1;
+      }
     }
 
     @media (max-width: 640px) {
@@ -305,6 +317,14 @@
 
       header h1 {
         font-size: 1.5rem;
+      }
+
+      #channelList {
+        max-height: 40vh;
+      }
+
+      video {
+        max-height: 40vh;
       }
     }
 
@@ -329,6 +349,26 @@
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 640px) {
+      footer {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -343,7 +383,7 @@
         <div class="filter-row">
           <div class="search-box">
             <label for="groupSelect">Filter by Group</label>
-            <select id="groupSelect" size="10" aria-label="Select group">
+            <select id="groupSelect" size="5" aria-label="Select group">
               <option value="">All Groups</option>
             </select>
           </div>
@@ -377,7 +417,7 @@
     </section>
   </main>
 
-  <footer style="text-align: center; padding: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+  <footer>
     <p>This app is vibe coded by Damith Kothalawala using Cline and Grok code.</p>
     <p>No copyright intended. IPTV feeds are from GitHub.</p>
     <p>If you encounter CORS errors, please use a CORS-disabling browser extension.</p>
