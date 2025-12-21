@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 135.46666 135.46667"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .anim-wrap, .draw, .pulse { animation: none !important; }
+      }
+
+      /* Whole mark: gentle float */
+      .anim-wrap {
+        transform-origin: 67.73333px 67.73333px; /* center of viewBox */
+        animation: float 4.8s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50%      { transform: translateY(-1.4px); }
+      }
+
+      /* Draw-on effect (stroke reveal) */
+      .draw {
+        fill: var(--fill);
+        stroke: var(--fill);
+        stroke-width: 0.55px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+
+        /* Dash values set big enough to cover path length */
+        stroke-dasharray: 240;
+        stroke-dashoffset: 240;
+
+        animation: draw 3.2s ease forwards;
+      }
+      /* stagger the two paths */
+      .draw.d1 { animation-delay: 1.15s; }
+      .draw.d2 { animation-delay: 1.35s; }
+
+      @keyframes draw {
+        0%   { stroke-dashoffset: 240; fill-opacity: 0; }
+        65%  { stroke-dashoffset: 0;   fill-opacity: 0.10; }
+        100% { stroke-dashoffset: 0;   fill-opacity: 1;    }
+      }
+
+      /* Very subtle pulse once it is drawn */
+      .pulse {
+        transform-origin: 67.73333px 67.73333px;
+        animation: pulse 2.4s ease-in-out infinite;
+        animation-delay: 1.4s; /* wait until draw completes */
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0.92; }
+      }
+    </style>
+  </defs>
+
+
+
+  <!-- Logo group (animated) -->
+  <g class="anim-wrap pulse">
+    <g
+      transform="matrix(3.3025621,0,0,3.3131161,-33.953039,-90.613994)"
+      style="stroke:none"
+    >
+      <path
+        class="draw d1"
+        style="mix-blend-mode:multiply; --fill:#104179;"
+        d="M 35.028655,27.355259 14.759588,49.839087 c 0,0 7.165979,0.05176 9.082165,0.06439 0.104456,7.04e-4 0.208814,0.01121 0.312717,0.03023 l 7.973804,-8.339993 13.072709,-14.23706 z"
+      />
+      <path
+        class="draw d2"
+        style="mix-blend-mode:multiply; --fill:#17979e;"
+        d="m 46.85922,68.223996 -10.438448,0.0089 -8.828473,-15.000786 c 0,0 -1.89802,-3.326001 -3.814206,-3.338608 -1.916186,-0.01262 -9.057019,-0.01474 -9.057019,-0.01474 l 6.257565,-6.931442 9.886486,0.01953 c 0,0 1.522981,0.08958 2.580108,1.935086 1.057126,1.845482 13.367481,23.242311 13.367481,23.242311 z"
+      />
+    </g>
+  </g>
+</svg>
