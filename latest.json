@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "version": "2.1.0",
+  "downloadURL": "https://github.com/damithkothalawala/damithkothalawala.github.io/releases/download/v2.1.0/Akuru-macOS.zip",
+  "releaseURL": "https://github.com/damithkothalawala/damithkothalawala.github.io/releases/tag/v2.1.0",
+  "sha256": "b32909cf1a4d79f8831a475fb5bde3bf6d2f38c4f3103771692df62116b94f86",
+  "byteCount": 122636640,
+  "publishedAt": "2026-10-03T05:56:05.756489+00:00",
+  "minimumMacOS": "12.0"
+}
